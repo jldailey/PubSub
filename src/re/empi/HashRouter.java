@@ -18,29 +18,5 @@ public class HashRouter<T>
 		if( ! containsKey(channel))
 			put(channel, new Channel<T>());
 	}
-	public static void main(String[] args) {
-		System.out.println("Hello World.");
-		Reciever<String> log = new Reciever<String>() {
-			public void recv(String message) {
-				System.out.println("log: " + message);
-			}
-		};
-		Channel<String> c = new Channel<String>();
-		c.subscribe(log);
-		c.publish("Hello  World.");
-
-		HashRouter<String> h = new HashRouter<String>();
-		h.subscribe("channel-one", log);
-		h.publish("channel-one", "Hello World.");
-		h.publish("channel-two", "Hello World.");
-		h.publish("channel-one", "Hello World.");
-		
-		PrefixRouter<String> p = new PrefixRouter<String>();
-		p.subscribe("channel-one", log);
-		p.subscribe("channel-two", log);
-		p.publish("channel-one", "to channel-one");
-		p.publish("channel-two", "to channel-two");
-		p.publish("channel", "to both channels");
-	}
 
 }
