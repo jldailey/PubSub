@@ -17,18 +17,15 @@ public class Main {
 		b.subscribe(log);
 		a.publish("hello to channel 'b' (via a)");
 
-		HashRouter<String> h = new HashRouter<String>();
-		h.subscribe("channel-one", log);
-		h.publish("channel-one", "hashrouter to channel-one.");
-		h.publish("channel-two", "hashrouter to channel-two.");
-		h.publish("channel-one", "hashrouter to channel-one again.");
-
 		PrefixRouter<String> p = new PrefixRouter<String>();
 		p.subscribe("channel-one", log);
 		p.subscribe("channel-two", log);
-		p.publish("channel-one", "prefixrouter to channel-one");
-		p.publish("channel-two", "prefixrouter to channel-two");
-		p.publish("channel", "prefixrouter to both channels");
+		p.publish("channel-one", "to channel-one");
+		p.publish("channel-two", "to channel-two");
+		p.publish("channel", "to both channels");
+		PrefixRouter<String> q = new PrefixRouter<String>();
+		q.pipeTo(p);
+		q.publish("channel", "to both channels via router q");
 	}
 
 }

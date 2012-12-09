@@ -16,6 +16,9 @@ public class Channel<T> implements Publisher<T> {
 	public void unsubscribe(Reciever<T> reciever) {
 		subscribers.remove(reciever);
 	}
+	public int size() {
+		return subscribers.size();
+	}
 	private class Pipe implements Reciever<T> {
 		Channel<T> dest;
 		public Pipe(Channel<T> d) {

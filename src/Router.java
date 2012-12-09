@@ -1,6 +1,6 @@
 
 
-public interface Router<T> {
-	public void publish(String route, T payload);
-	public void subscribe(String route, Reciever<T> reciever);
+public interface Router<K, T> {
+	public void publish(K route, T payload);
+	public void subscribe(K route, Reciever<T> reciever);
 }
