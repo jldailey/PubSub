@@ -54,15 +54,14 @@ public class PrefixRouter<T> implements Router<T> {
 			return root.find(prefix);
 		}
 	}
-	
+
 	Trie routes = new Trie();
 	HashRouter<T> hub = new HashRouter<T>();
 	public void publish(String route, T message) {
 		routes.add(route);
 		Iterator<String> channels = routes.find(route);
 		while( channels.hasNext() ) {
-			String chan = channels.next();
-			hub.publish(chan, message);
+			hub.publish(channels.next(), message);
 		}
 	}
 	public void subscribe(String route, Reciever<T> reciever) {
