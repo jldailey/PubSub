@@ -17,29 +17,31 @@ public class Util {
 				add(item, item);
 			}
 			private void add(String item, String rest) {
-				// if( ! contents.contains(item) ) { System.out.println("TrieNode::add(\""+item+"\", \""+rest+"\")"); }
-				contents.add(item);
-				if( item.length() == 0 || rest.length() == 0 ) return;
-				String first = rest.substring(0,1);
-				if( ! children.containsKey(first) ) {
-					children.put(first, new TrieNode());
+				synchronized(this) {
+					contents.add(item);
+					if( item.length() == 0 || rest.length() == 0 ) return;
+					String first = rest.substring(0,1);
+					if( ! children.containsKey(first) ) {
+						children.put(first, new TrieNode());
+					}
+					children.get(first).add(item, rest.substring(1));
 				}
-				children.get(first).add(item, rest.substring(1));
 			}
 			public Iterator<String> find(String prefix) {
-				// System.out.println("TrieNode::find(\""+prefix+"\") : " + contents.size());
-				switch( prefix.length() ) {
-				case 0:
-					return contents.iterator();
-				case 1:
-					if( children.containsKey(prefix) )
-						return children.get(prefix).find("");
-					return emptyIterator;
-				default:
-					String first = prefix.substring(0,1);
-					if( children.containsKey(first) )
-						return children.get(first).find(prefix.substring(1));
-					return emptyIterator;
+				synchronized(this) {
+					switch( prefix.length() ) {
+					case 0:
+						return contents.iterator();
+					case 1:
+						if( children.containsKey(prefix) )
+							return children.get(prefix).find("");
+						return emptyIterator;
+					default:
+						String first = prefix.substring(0,1);
+						if( children.containsKey(first) )
+							return children.get(first).find(prefix.substring(1));
+						return emptyIterator;
+					}
 				}
 			}
 		}
